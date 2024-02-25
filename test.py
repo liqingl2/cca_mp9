@@ -6,15 +6,15 @@ url = "https://seorwrpmwh.execute-api.us-east-1.amazonaws.com/prod/mp-9"
 
 student = {
     "submitterEmail": "liqingl2@ellinois.edu", #<Your coursera account email>
-    "secret": "Nmfuw6Hgysq9R2zp" #<Your secret token from coursera>
+    "secret": "2ibQAdJOPTKvHyu3" #<Your secret token from coursera>
 }
 
 sql1_numFilteredEntries = 184 #<The count of the filtered entries from 3.3 SQL query 1>
 sql2_numFilteredEntries = 1258 #<The count of the filtered entries from 3.3 SQL query 2>
 
-viz0CsvPath = {} #<Filepath for your tableau viz0 csv/tsv file>
-viz1CsvPath = {} #<Filepath for your tableau viz1 csv/tsv file>
-viz2CsvPath = {} #<Filepath for your tableau viz2 csv/tsv file>
+viz0CsvPath = "" #<Filepath for your tableau viz0 csv/tsv file>
+viz1CsvPath = "" #<Filepath for your tableau viz1 csv/tsv file>
+viz2CsvPath = "" #<Filepath for your tableau viz2 csv/tsv file>
 
 # The column ordering in the tsv file may not be preserved when you export the data.
 # Therefore, please check and modify the respective column index below
@@ -64,14 +64,17 @@ def main():
     # viz0Data = readViz0(viz0CsvPath, viz0DestAirportColumn, viz0CountAirlineColumn, viz0LatitudeColumn, viz0LongitudeColumn)
     # viz1Data = readViz12(viz1CsvPath, viz1StopOverColumn)
     # viz2Data = readViz12(viz2CsvPath, viz2ArrivalDelayColumn)
+    viz0Data = {}
+    viz1Data = {}
+    viz2Data = {}
 
     payload = {}
     payload['student'] = student
     payload['sql1_numFilteredEntries'] = sql1_numFilteredEntries
     payload['sql2_numFilteredEntries'] = sql2_numFilteredEntries
-    # payload['viz0'] = viz0Data
-    # payload['viz1'] = viz1Data
-    # payload['viz2'] = viz2Data
+    payload['viz0'] = viz0Data
+    payload['viz1'] = viz1Data
+    payload['viz2'] = viz2Data
     print(json.dumps(payload))
     sendToAutograder(payload)
 
