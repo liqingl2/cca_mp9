@@ -10,11 +10,11 @@ student = {
 }
 
 sql1_numFilteredEntries = 184 #<The count of the filtered entries from 3.3 SQL query 1>
-sql2_numFilteredEntries = 0 #<The count of the filtered entries from 3.3 SQL query 2>
+sql2_numFilteredEntries = 1258 #<The count of the filtered entries from 3.3 SQL query 2>
 
-viz0CsvPath = "" #<Filepath for your tableau viz0 csv/tsv file>
-viz1CsvPath = "" #<Filepath for your tableau viz1 csv/tsv file>
-viz2CsvPath = "" #<Filepath for your tableau viz2 csv/tsv file>
+viz0CsvPath = {} #<Filepath for your tableau viz0 csv/tsv file>
+viz1CsvPath = {} #<Filepath for your tableau viz1 csv/tsv file>
+viz2CsvPath = {} #<Filepath for your tableau viz2 csv/tsv file>
 
 # The column ordering in the tsv file may not be preserved when you export the data.
 # Therefore, please check and modify the respective column index below
