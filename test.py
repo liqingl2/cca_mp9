@@ -61,17 +61,17 @@ def sendToAutograder(payload):
     print(r.text)
 
 def main():
-    viz0Data = readViz0(viz0CsvPath, viz0DestAirportColumn, viz0CountAirlineColumn, viz0LatitudeColumn, viz0LongitudeColumn)
-    viz1Data = readViz12(viz1CsvPath, viz1StopOverColumn)
-    viz2Data = readViz12(viz2CsvPath, viz2ArrivalDelayColumn)
+    # viz0Data = readViz0(viz0CsvPath, viz0DestAirportColumn, viz0CountAirlineColumn, viz0LatitudeColumn, viz0LongitudeColumn)
+    # viz1Data = readViz12(viz1CsvPath, viz1StopOverColumn)
+    # viz2Data = readViz12(viz2CsvPath, viz2ArrivalDelayColumn)
 
     payload = {}
     payload['student'] = student
     payload['sql1_numFilteredEntries'] = sql1_numFilteredEntries
     payload['sql2_numFilteredEntries'] = sql2_numFilteredEntries
-    payload['viz0'] = viz0Data
-    payload['viz1'] = viz1Data
-    payload['viz2'] = viz2Data
+    # payload['viz0'] = viz0Data
+    # payload['viz1'] = viz1Data
+    # payload['viz2'] = viz2Data
     print(json.dumps(payload))
     sendToAutograder(payload)
 
