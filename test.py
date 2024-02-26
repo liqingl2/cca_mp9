@@ -6,13 +6,13 @@ url = "https://seorwrpmwh.execute-api.us-east-1.amazonaws.com/prod/mp-9"
 
 student = {
     "submitterEmail": "liqingl2@ellinois.edu", #<Your coursera account email>
-    "secret": "2ibQAdJOPTKvHyu3" #<Your secret token from coursera>
+    "secret": "r9pTzUSb6aZ83qYb" #<Your secret token from coursera>
 }
 
 sql1_numFilteredEntries = 184 #<The count of the filtered entries from 3.3 SQL query 1>
 sql2_numFilteredEntries = 1258 #<The count of the filtered entries from 3.3 SQL query 2>
 
-viz0CsvPath = "" #<Filepath for your tableau viz0 csv/tsv file>
+viz0CsvPath = "mp9-viz0.csv" #<Filepath for your tableau viz0 csv/tsv file>
 viz1CsvPath = "" #<Filepath for your tableau viz1 csv/tsv file>
 viz2CsvPath = "" #<Filepath for your tableau viz2 csv/tsv file>
 
@@ -31,7 +31,7 @@ def readViz0(filePath, destAirportColumn, countAirlineColumn, latitudeColumn, lo
     vizData = {}
 
     with  open(filePath, encoding="utf8", errors='ignore') as csvfile:
-        reader = csv.reader((line.replace('\0','') for line in csvfile), delimiter='\t')
+        reader = csv.reader((line.replace('\0','') for line in csvfile), delimiter=',')
         header = reader.__next__()
 
         for row in reader:
@@ -45,7 +45,7 @@ def readViz12(filePath, keyColumn):
     valueColumn = int(not keyColumn)
 
     with  open(filePath, encoding="utf8", errors='ignore') as csvfile:
-        reader = csv.reader((line.replace('\0','') for line in csvfile), delimiter='\t')
+        reader = csv.reader((line.replace('\0','') for line in csvfile), delimiter=',')
         header = reader.__next__()
 
         for row in reader:
