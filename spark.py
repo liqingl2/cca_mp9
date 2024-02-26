@@ -8,6 +8,7 @@ from awsglue.dynamicframe import DynamicFrame
 from awsglue.job import Job
 from pyspark.sql.functions import col
 from pyspark.sql.types import IntegerType
+from pyspark.sql.functions import *
 
 import logging
 logger = logging.getLogger()
@@ -34,9 +35,9 @@ client = boto3.client('glue')
 # use the create_dynamic_frame.from_catalog() API of the GlueContext class. Use
 # the Glue catalog database and table name (output of job 1) as arguments.
 datasource0 = glueContext.create_dynamic_frame.from_catalog(database="test-flights-db", table_name="filtered", transformation_ctx="datasource0")
-# print("Schema for the flightsraw DynamicFrame:")
-# data.printSchema()
-logger.info(datasource0.printSchema())
+# datasource0.show(10)
+# datasource0.printSchema()
+# datasource0.count()
 
 # 3. Get Spark dataframe from the Glue dynamic frame created above
 datasource1=datasource0.toDF()
@@ -58,7 +59,13 @@ new_time_zone_diff = (
      datasource1.scheduled_time) % (24 * 60)
 )
 
-datasource1 = datasource1.withColumn('time_zone_difference', new_time_zone_diff)  
+#datasource1 = datasource1.withColumn('time_zone_difference', lit(new_time_zone_diff))
+datasource1 = datasource1.withColumn('time_zone_difference', new_time_zone_diff.cast(IntegerType()))  
+
+# print(datasource1.collect())
+# print(datasource1.show())
+# # datasource1.select_fields(['time_zone_difference', 'year'])
+# datasource1.show(3)
 
 # 5. Convert Spark data frame back to Glue dynamic frame
 # Note - you can do step 4 using AWS Glue dynamic frame APIs also if you want
@@ -90,67 +97,59 @@ col_time_zone_diff = {'Name': 'time_zone_difference', 'Type': 'bigint'}
 print('col_time_zone_diff', col_time_zone_diff)
 
 # 9. Append the new column info to the table dictionary (obtained in step 6) columns list
-if 'StorageDescriptor' in table_schema_dict:
-    table_schema_dict['StorageDescriptor']['Columns'].append(col_time_zone_diff)
+if table_schema_dict['Table'] is not None and table_schema_dict['Table']['StorageDescriptor'] is not None:
+    table_schema_dict['Table']['StorageDescriptor']['Columns'].append(col_time_zone_diff)
 print('table_schema_dict', table_schema_dict)
 
 # 10. Update the table with the new schema. Use the update_table() API of glue client:
 # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/glue/client/update_table.html
+table = table_schema_dict['Table']
+print('table', table)
 response = client.update_table(
-    DatabaseName='test-flights-db', 
+    DatabaseName=table['DatabaseName'],
     TableInput= {
         'Name': 'time_diff',
         'StorageDescriptor': {
             'Columns': [
                   {
                     "Name": "year",
-                    "Type": "bigint",
-                    "Comment": ""
+                    "Type": "bigint"
                   },
                   {
                     "Name": "day",
-                    "Type": "bigint",
-                    "Comment": ""
+                    "Type": "bigint"
                   },
                   {
                     "Name": "origin_airport",
-                    "Type": "string",
-                    "Comment": ""
+                    "Type": "string"
                   },
                   {
                     "Name": "departure_delay",
-                    "Type": "bigint",
-                    "Comment": ""
+                    "Type": "bigint"
                   },
                   {
                     "Name": "scheduled_time",
-                    "Type": "bigint",
-                    "Comment": ""
+                    "Type": "bigint"
                   },
                   {
                     "Name": "cancelled",
-                    "Type": "bigint",
-                    "Comment": ""
+                    "Type": "bigint"
                   },
                   {
                     "Name": "elapsed_time",
-                    "Type": "bigint",
-                    "Comment": ""
+                    "Type": "bigint"
                   },
                   {
                     "Name": "diverted",
-                    "Type": "bigint",
-                    "Comment": ""
+                    "Type": "bigint"
                   },
                   {
                     "Name": "destination_airport",
-                    "Type": "string",
-                    "Comment": ""
+                    "Type": "string"
                   },
                   {
                     "Name": "departure_time",
-                    "Type": "bigint",
-                    "Comment": ""
+                    "Type": "bigint"
                   },
                   {
                     "Name": "arrival_delay",
@@ -159,66 +158,76 @@ response = client.update_table(
                   },
                   {
                     "Name": "scheduled_departure",
-                    "Type": "bigint",
-                    "Comment": ""
+                    "Type": "bigint"
                   },
                   {
                     "Name": "arrival_time",
-                    "Type": "bigint",
-                    "Comment": ""
+                    "Type": "bigint"
                   },
                   {
                     "Name": "month",
-                    "Type": "bigint",
-                    "Comment": ""
+                    "Type": "bigint"
                   },
                   {
                     "Name": "airline",
-                    "Type": "string",
-                    "Comment": ""
+                    "Type": "string"
                   },
                   {
                     "Name": "scheduled_arrival",
-                    "Type": "bigint",
-                    "Comment": ""
+                    "Type": "bigint"
                   },
                 {
                     "Name": "time_zone_difference",
-                    "Type": "bigint",
-                    "Comment": ""
+                    "Type": "bigint"
                   }
             ],
-            'SortColumns': [
-                {
-                    'Column': 'year',
-                    'SortOrder': 1
-                },
-            ],
-    },
-    # 'PartitionKeys': []
+        }
     }
-)
-print('response', response)
+    )
+    
 # 11. Get the output S3 bucket in which the transformed table data will be
 # stored. Use the getSink() API of the GlueContext class.
 
-s3_data_sink = glueContext.getSink(
-        path='s3://mp10-bucket/time_diff_column/', 
-        connection_type = 's3', 
-        updateBehavior='UPDATE_IN_DATABASE', 
-        partitionKeys = [], 
-        enableUpdateCatalog = True
-    )
-
+# s3_data_sink = glueContext.getSink(
+#         path='s3://mp10-bucket/time_diff_column/',
+#         connection_type = 's3', 
+#         updateBehavior='UPDATE_IN_DATABASE', 
+#         partitionKeys = [], 
+#         enableUpdateCatalog = True,
+#         # transformation_ctx="s3_data_sink"
+#     )
+sink = glueContext.getSink(connection_type="s3", path="s3://mp10-bucket/time_diff_column/",
+    enableUpdateCatalog=True, updateBehavior="UPDATE_IN_DATABASE",
+    partitionKeys=[])
+sink.setFormat("json")
+sink.setCatalogInfo(catalogDatabase="test-flights-db", catalogTableName="time_diff")
+sink.writeFrame(datasource2)
+# glueContext.write_daynamic_frame_from_options(
+# frame=datasource2,
+# connection_type="s3",
+# connection_options={
+#     path="s3://mp10-bucket/time_diff_column/",
+#     format="json",
+#     format_options={
+#         transformation_ctx = "datasource2"
+#     }
+# }
+# )
+glueContext.write_daynamic_frame_from_catalog(
+    frame=datasource2,
+    database="test-flights-db",
+    table_name="time_diff"
+)
 # 12. Set the catalog database and table using the setCatalogInfo() API on
 # the object obtained in step 11.
-s3_data_sink.setCatalogInfo(catalogDatabase='test-flights-db', catalogTableName='time_diff')
+# s3_data_sink.setFormat('json')
+# s3_data_sink.setCatalogInfo(catalogDatabase='test-flights-db', catalogTableName='time_diff')
 
 # 13. Set the format to 'json' using setFormat() API
-s3_data_sink.setFormat('json')
 
 # 14. Write data into S3 bucket using writeFrame()
-s3_data_sink.writeFrame(datasource2)
+
+# s3_data_sink.writeFrame(datasource2)
 
 # End TODOs
 
