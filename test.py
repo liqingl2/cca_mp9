@@ -10,7 +10,7 @@ student = {
 }
 
 sql1_numFilteredEntries = 184 #<The count of the filtered entries from 3.3 SQL query 1>
-sql2_numFilteredEntries = 1274 #<The count of the filtered entries from 3.3 SQL query 2>
+sql2_numFilteredEntries = 1277 #<The count of the filtered entries from 3.3 SQL query 2>
 
 viz0CsvPath = "mp9-viz0.csv" #<Filepath for your tableau viz0 csv/tsv file>
 viz1CsvPath = "" #<Filepath for your tableau viz1 csv/tsv file>
