@@ -6,11 +6,11 @@ url = "https://seorwrpmwh.execute-api.us-east-1.amazonaws.com/prod/mp-9"
 
 student = {
     "submitterEmail": "liqingl2@ellinois.edu", #<Your coursera account email>
-    "secret": "r9pTzUSb6aZ83qYb" #<Your secret token from coursera>
+    "secret": "kHyfkfmd2dFPG2cW" #<Your secret token from coursera>
 }
 
 sql1_numFilteredEntries = 184 #<The count of the filtered entries from 3.3 SQL query 1>
-sql2_numFilteredEntries = 1258 #<The count of the filtered entries from 3.3 SQL query 2>
+sql2_numFilteredEntries = 33903 #<The count of the filtered entries from 3.3 SQL query 2>
 
 viz0CsvPath = "mp9-viz0.csv" #<Filepath for your tableau viz0 csv/tsv file>
 viz1CsvPath = "" #<Filepath for your tableau viz1 csv/tsv file>
