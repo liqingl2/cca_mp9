@@ -35,7 +35,6 @@ def readViz0(filePath, destAirportColumn, countAirlineColumn, latitudeColumn, lo
         header = reader.__next__()
 
         for row in reader:
-            print(row)
             if len(row) == 4:
                 vizData[row[destAirportColumn]] = [str(row[countAirlineColumn]), str(row[latitudeColumn]), str(row[longitudeColumn])]
     print(vizData)
