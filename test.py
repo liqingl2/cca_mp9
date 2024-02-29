@@ -31,14 +31,14 @@ def readViz0(filePath, destAirportColumn, countAirlineColumn, latitudeColumn, lo
     vizData = {}
 
     with  open(filePath, encoding="utf8", errors='ignore') as csvfile:
-        reader = csv.reader((line.replace('\0','') for line in csvfile), delimiter=' ')
+        reader = csv.reader((line.replace('\0','') for line in csvfile), delimiter='\t')
         header = reader.__next__()
 
         for row in reader:
             print(row)
             if len(row) == 4:
                 vizData[row[destAirportColumn]] = [str(row[countAirlineColumn]), str(row[latitudeColumn]), str(row[longitudeColumn])]
-
+    print(vizData)
     return vizData
 
 def readViz12(filePath, keyColumn):
@@ -46,7 +46,7 @@ def readViz12(filePath, keyColumn):
     valueColumn = int(not keyColumn)
 
     with  open(filePath, encoding="utf8", errors='ignore') as csvfile:
-        reader = csv.reader((line.replace('\0','') for line in csvfile), delimiter=' ')
+        reader = csv.reader((line.replace('\0','') for line in csvfile), delimiter='\t')
         header = reader.__next__()
 
         for row in reader:
