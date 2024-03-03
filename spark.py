@@ -188,46 +188,25 @@ response = client.update_table(
 # 11. Get the output S3 bucket in which the transformed table data will be
 # stored. Use the getSink() API of the GlueContext class.
 
-# s3_data_sink = glueContext.getSink(
-#         path='s3://mp10-bucket/time_diff_column/',
-#         connection_type = 's3', 
-#         updateBehavior='UPDATE_IN_DATABASE', 
-#         partitionKeys = [], 
-#         enableUpdateCatalog = True,
-#         # transformation_ctx="s3_data_sink"
-#     )
-sink = glueContext.getSink(connection_type="s3", path="s3://mp10-bucket/time_diff_column/",
-    enableUpdateCatalog=True, updateBehavior="UPDATE_IN_DATABASE",
+sink = glueContext.getSink(
+    connection_type="s3", 
+    path="s3://mp10-bucket/time_diff_column/",
+    enableUpdateCatalog=True, 
+    updateBehavior="UPDATE_IN_DATABASE",
     partitionKeys=[])
-sink.setFormat("json")
-sink.setCatalogInfo(catalogDatabase="test-flights-db", catalogTableName="time_diff")
-sink.writeFrame(datasource2)
-# glueContext.write_daynamic_frame_from_options(
-# frame=datasource2,
-# connection_type="s3",
-# connection_options={
-#     path="s3://mp10-bucket/time_diff_column/",
-#     format="json",
-#     format_options={
-#         transformation_ctx = "datasource2"
-#     }
-# }
-# )
-glueContext.write_daynamic_frame_from_catalog(
-    frame=datasource2,
-    database="test-flights-db",
-    table_name="time_diff"
-)
+
 # 12. Set the catalog database and table using the setCatalogInfo() API on
 # the object obtained in step 11.
-# s3_data_sink.setFormat('json')
-# s3_data_sink.setCatalogInfo(catalogDatabase='test-flights-db', catalogTableName='time_diff')
-
 # 13. Set the format to 'json' using setFormat() API
-
 # 14. Write data into S3 bucket using writeFrame()
-
 # s3_data_sink.writeFrame(datasource2)
+
+#doesn't work
+sink.setCatalogInfo(catalogDatabase="test-flights-db", catalogTableName="time_diff")
+sink.setFormat("json")
+sink.writeFrame(datasource2)
+
+
 
 # End TODOs
 
