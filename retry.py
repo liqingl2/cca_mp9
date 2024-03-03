@@ -19,6 +19,7 @@ concatenated_df = pd.concat(dfs, ignore_index=True)
 filtered_df = concatenated_df[
     (concatenated_df['scheduled_departure'].between(800, 1200, inclusive='left')) &
     (concatenated_df['origin_airport'] == 'ORD') &
+    (concatenated_df['cancelled'] == 0) &
     (concatenated_df['month'] == 12) &
     (concatenated_df['day'] == 25)
 ][['airline', 'origin_airport', 'destination_airport']]
