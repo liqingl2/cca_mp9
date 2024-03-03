@@ -24,9 +24,18 @@ filtered_df = concatenated_df[
     (concatenated_df['day'] == 25)
 ][['airline', 'origin_airport', 'destination_airport']]
 
+# Add a new column 'time_zone_difference' to the filtered DataFrame
+filtered_df['time_zone_difference'] = (
+    (filtered_df['scheduled_arrival'] // 100) * 60 +
+    (filtered_df['scheduled_arrival'] % 100) -
+    ((filtered_df['scheduled_departure'] // 100) * 60 +
+     (filtered_df['scheduled_departure'] % 100) +
+     filtered_df['scheduled_time']) % (24 * 60)
+)
+
 # Print the resulting DataFrame
 print(filtered_df)
 
-output_csv_path = 'query1.csv'
+output_csv_path = 'query2.csv'
 filtered_df.to_csv(output_csv_path, index=False)
 print(f"Filtered data saved to {output_csv_path}")
