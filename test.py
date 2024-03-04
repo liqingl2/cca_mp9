@@ -14,7 +14,7 @@ sql2_numFilteredEntries = 1277 #<The count of the filtered entries from 3.3 SQL 
 
 viz0CsvPath = "mp9-viz0.csv" #<Filepath for your tableau viz0 csv/tsv file>
 viz1CsvPath = "mp9-viz1.csv" #<Filepath for your tableau viz1 csv/tsv file>
-viz2CsvPath = "" #<Filepath for your tableau viz2 csv/tsv file>
+viz2CsvPath = "mp9-viz2.csv" #<Filepath for your tableau viz2 csv/tsv file>
 
 # The column ordering in the tsv file may not be preserved when you export the data.
 # Therefore, please check and modify the respective column index below
