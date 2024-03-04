@@ -63,9 +63,7 @@ def sendToAutograder(payload):
 def main():
     viz0Data = readViz0(viz0CsvPath, viz0DestAirportColumn, viz0CountAirlineColumn, viz0LatitudeColumn, viz0LongitudeColumn)
     viz1Data = readViz12(viz1CsvPath, viz1StopOverColumn)
-    # viz2Data = readViz12(viz2CsvPath, viz2ArrivalDelayColumn)
-
-    viz2Data = {}
+    viz2Data = readViz12(viz2CsvPath, viz2ArrivalDelayColumn)
 
     payload = {}
     payload['student'] = student
